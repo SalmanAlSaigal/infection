@@ -1,0 +1,11 @@
+{
+  "short_name": "Pandemic Simulatoin",
+  "name": "Simulation of a pandemic",
+  "orientation": "portrait",
+  "developer": {
+    "name": "Salman AlSaigal",
+    "url": "https://github.com/SalmanAlSaigal"
+  },
+  "start_url": "./index.html",
+  "display": "fullscreen"
+}

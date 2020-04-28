@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Pandemic Simulation</title>
+    <meta
+      name="description"
+      content="An interactive toy to play with pandemic parameters"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <!-- Place favicon.ico in the root directory -->
+
+    <meta name="theme-color" content="#121212" />
+
+    <link rel="stylesheet" type="text/css" href="index.css" />
+
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body class="bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Pandemic Simulation</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="http://github.com/SalmanAlSaigal"
+              >Github</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <canvas
+      id="simulation"
+      class="d-block my-5"
+      width="100%"
+      height="800px"
+    ></canvas>
+
+    <footer class="bg-dark container-fluid text-light text-center mt-4 p-4">
+      Made with ♥ by
+      <a href="http://github.com/SalmanAlSaigal">Salman AlSaigal</a>
+    </footer>
+
+    <script src="victor.min.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
