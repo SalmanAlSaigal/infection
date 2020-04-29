@@ -1,4 +1,5 @@
 const CREATURE_SIZE = 10;
+const BAR_SIZE = 2;
 
 const COLORS = {
   background: "#161616",
@@ -7,7 +8,7 @@ const COLORS = {
   inf: "#ff8597",
   rem: "#c9c9c9",
 
-	ignore_social_distance: '#f00',
+  ignore_social_distance: "#f00",
 
   inf_glow: "#ff859710",
   social_distance: "#a0a00010",
@@ -25,75 +26,80 @@ window.addEventListener("load", () => {
     genesis(creatureCountSlider.value);
   });
 
-  var creatureCountSlider = document.getElementById(
-    "creature-count-slider"
-  );
+  var creatureCountSlider = document.getElementById("creature-count-slider");
   creatureCountSlider.addEventListener("change", (e) => {
-		document.getElementById('creature-count-slider-value').innerHTML = e.target.value;
+    document.getElementById("creature-count-slider-value").innerHTML =
+      e.target.value;
     options.creatureCount = e.target.value;
-		genesis(options.creatureCount)
+    genesis(options.creatureCount);
   });
   var infectionRadiusSlider = document.getElementById(
     "infection-radius-slider"
   );
   infectionRadiusSlider.addEventListener("input", (e) => {
-		document.getElementById('infection-radius-slider-value').innerHTML = e.target.value;
+    document.getElementById("infection-radius-slider-value").innerHTML =
+      e.target.value;
     options.infectionRadius = e.target.value;
   });
-  var socialDistanceSlider = document.getElementById(
-    "social-distance-slider"
-  );
+  var socialDistanceSlider = document.getElementById("social-distance-slider");
   socialDistanceSlider.addEventListener("input", (e) => {
-		document.getElementById('social-distance-slider-value').innerHTML = e.target.value;
+    document.getElementById("social-distance-slider-value").innerHTML =
+      e.target.value;
     options.socialDistance = e.target.value;
   });
-  var infProbSlider = document.getElementById(
-    "infect-prob-slider"
-  );
+  var infProbSlider = document.getElementById("infect-prob-slider");
   infProbSlider.addEventListener("input", (e) => {
-		document.getElementById('infect-prob-slider-value').innerHTML = `${Math.floor(e.target.value * 10000)/100}%`;
+    document.getElementById("infect-prob-slider-value").innerHTML = `${
+      Math.floor(e.target.value * 10000) / 100
+    }%`;
     options.infProb = e.target.value;
   });
-  var healProbSlider = document.getElementById(
-    "heal-prob-slider"
-  );
+  var healProbSlider = document.getElementById("heal-prob-slider");
   healProbSlider.addEventListener("input", (e) => {
-		document.getElementById('heal-prob-slider-value').innerHTML = `${Math.floor(e.target.value * 10000)/100}%`;
+    document.getElementById("heal-prob-slider-value").innerHTML = `${
+      Math.floor(e.target.value * 10000) / 100
+    }%`;
     options.healProb = e.target.value;
   });
   var ignoreSocialDistanceSlider = document.getElementById(
     "ignore-social-distance-slider"
   );
   ignoreSocialDistanceSlider.addEventListener("input", (e) => {
-		document.getElementById('ignore-social-distance-slider-value').innerHTML = e.target.value;
+    document.getElementById("ignore-social-distance-slider-value").innerHTML =
+      e.target.value;
     options.ignoreSocialDistance = e.target.value;
   });
   var spontaniousInfectionSlider = document.getElementById(
     "spontanious-infection-slider"
   );
   spontaniousInfectionSlider.addEventListener("input", (e) => {
-		document.getElementById('spontanious-infection-slider-value').innerHTML = `${Math.floor(e.target.value * 1000000)/10000}%`;
+    document.getElementById(
+      "spontanious-infection-slider-value"
+    ).innerHTML = `${Math.floor(e.target.value * 1000000) / 10000}%`;
     options.ignoreSocialDistance = e.target.value;
   });
 
   // User interaction options
   var options = {
-		creatureCount: creatureCountSlider.value,
+    creatureCount: creatureCountSlider.value,
 
     playing: true,
     infectionRadius: infectionRadiusSlider.value,
     socialDistance: socialDistanceSlider.value,
 
-		infProb: infProbSlider.value,
-		healProb: healProbSlider.value,
-		spontaniousInfectionProb: spontaniousInfectionSlider.value,
+    infProb: infProbSlider.value,
+    healProb: healProbSlider.value,
+    spontaniousInfectionProb: spontaniousInfectionSlider.value,
 
-		ignoreSocialDistance: ignoreSocialDistanceSlider.value
+    ignoreSocialDistance: ignoreSocialDistanceSlider.value,
   };
-
 
   const canvas = document.getElementById("simulation");
   const ctx = canvas.getContext("2d");
+  const gCanvas = document.getElementById("graph");
+  const gctx = gCanvas.getContext("2d");
+  let graphData = [];
+	let lastDrawnGraphLength =0;
 
   let [topLeft, bottomRight] = [
     new Victor(CREATURE_SIZE, CREATURE_SIZE),
@@ -104,14 +110,18 @@ window.addEventListener("load", () => {
   const setCanvasSize = () => {
     canvas.width = window.innerWidth * 0.9;
     canvas.height = "500";
+    gCanvas.width = window.innerWidth * 0.9;
+    gCanvas.height = "100";
     bottomRight = new Victor(canvas.width - CREATURE_SIZE, 500 - CREATURE_SIZE);
   };
   setCanvasSize();
   window.addEventListener("resize", setCanvasSize, false);
 
   // Generate creatures
+  let updateCount = 0;
   let creatures = [];
   var genesis = (creatureCount) => {
+    graphData = [];
     creatures = [];
     for (let i = 0; i < creatureCount; i++)
       creatures.push({
@@ -124,6 +134,7 @@ window.addEventListener("load", () => {
         state: "sus", // Possible states are Susciptable(sus), Infected(inf), and Removed(rem)
       });
     creatures[0].state = "inf";
+    updateCount = 0;
   };
   genesis(options.creatureCount);
 
@@ -161,7 +172,8 @@ window.addEventListener("load", () => {
           }))
       )
         c.state = "inf";
-      else if (c.state === "inf" && Math.random() < options.healProb) c.state = "rem";
+      else if (c.state === "inf" && Math.random() < options.healProb)
+        c.state = "rem";
 
       // Keep creatures inside box
       let outOfBounds = false;
@@ -181,7 +193,11 @@ window.addEventListener("load", () => {
       }
 
       // Integrate motion
-      if (options.socialDistance > 0 && index >= options.ignoreSocialDistance && c.neighbours.length > 0) {
+      if (
+        options.socialDistance > 0 &&
+        index >= options.ignoreSocialDistance &&
+        c.neighbours.length > 0
+      ) {
         c.acc = new Victor();
         c.neighbours.forEach((n) => {
           const distance = c.pos.distance(n.pos);
@@ -201,6 +217,21 @@ window.addEventListener("load", () => {
       c.vel.limit(1, 0.1);
       c.pos.add(c.vel);
     });
+
+    // Only update graph once every 10 updates
+    if (updateCount % 16 === 0) {
+      let graphDataInsert = {
+        sus: 0,
+        inf: 0,
+        rem: 0,
+      };
+      creatures.forEach(({ state }) => graphDataInsert[state]++);
+      graphData.push(graphDataInsert);
+      if (graphData.length * BAR_SIZE > gCanvas.width) {
+        graphData = graphData.slice(Math.floor(graphData.length * 0.3));
+      }
+    }
+    updateCount++;
   };
   setInterval(loop, 16); // Loop every 16ms for 60 fps
 
@@ -209,36 +240,81 @@ window.addEventListener("load", () => {
     ctx.fillStyle = COLORS.background;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    creatures.forEach(({ pos: { x, y }, vel, acc, state, neighbours = [] }, index) => {
-      ctx.beginPath();
-      ctx.fillStyle = COLORS[state];
-      ctx.arc(x, y, CREATURE_SIZE, 0, 2 * Math.PI);
-      ctx.fill();
-			if(index < options.ignoreSocialDistance)
-				{ctx.strokeStyle =COLORS.ignore_social_distance;
-				ctx.stroke()}
-
-      if (state === "inf") {
+    creatures.forEach(
+      ({ pos: { x, y }, vel, acc, state, neighbours = [] }, index) => {
         ctx.beginPath();
-        ctx.fillStyle = COLORS.inf_glow;
-        ctx.arc(x, y, options.infectionRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = COLORS[state];
+        ctx.arc(x, y, CREATURE_SIZE, 0, 2 * Math.PI);
         ctx.fill();
+        if (index < options.ignoreSocialDistance) {
+          ctx.strokeStyle = COLORS.ignore_social_distance;
+          ctx.stroke();
+        }
+
+        if (state === "inf") {
+          ctx.beginPath();
+          ctx.fillStyle = COLORS.inf_glow;
+          ctx.arc(x, y, options.infectionRadius, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.fillStyle = COLORS.social_distance;
+        ctx.arc(x, y, options.socialDistance, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = COLORS.social_distance;
+        ctx.beginPath();
+        neighbours.forEach((n) => {
+          ctx.moveTo(x, y);
+          ctx.lineTo(n.pos.x, n.pos.y);
+        });
+        ctx.stroke();
       }
+    );
 
-      ctx.beginPath();
-      ctx.fillStyle = COLORS.social_distance;
-      ctx.arc(x, y, options.socialDistance, 0, 2 * Math.PI);
-      ctx.fill();
+		if(graphData.length !== lastDrawnGraphLength){
+			gctx.fillStyle = COLORS.background;
+			gctx.fillRect(0, 0, gCanvas.width, gCanvas.height);
+			const graphLength = graphData.length
+			graphData.forEach(({ sus, inf, rem }, index) => {
+				const x = index * BAR_SIZE /2;
 
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = COLORS.social_distance;
-      ctx.beginPath();
-      neighbours.forEach((n) => {
-        ctx.moveTo(x, y);
-        ctx.lineTo(n.pos.x, n.pos.y);
-      });
-      ctx.stroke();
-    });
+				const remBarHeight = (rem / options.creatureCount) * gCanvas.height;
+				const infBarHeight = (inf / options.creatureCount) * gCanvas.height;
+				const susBarHeight = (sus / options.creatureCount) * gCanvas.height;
+
+				let currentHeight = 0;
+				gctx.fillStyle = COLORS.rem;
+				gctx.fillRect(
+					x,
+					currentHeight,
+					x + BAR_SIZE,
+					remBarHeight
+				);
+				currentHeight += remBarHeight;
+
+				gctx.fillStyle = COLORS.sus;
+				gctx.fillRect(
+					x,
+					currentHeight,
+					x + BAR_SIZE,
+					susBarHeight
+				);
+				currentHeight += susBarHeight;
+
+				gctx.fillStyle = COLORS.inf;
+				gctx.fillRect(
+					x,
+					currentHeight,
+					x + BAR_SIZE,
+					infBarHeight
+				);
+				currentHeight += infBarHeight;
+			});
+			lastDrawnGraphLength = graphLength
+		}
 
     requestAnimationFrame(render);
   };

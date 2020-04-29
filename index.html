@@ -79,6 +79,12 @@
       width="100%"
       height="800px"
     ></canvas>
+    <canvas
+      id="graph"
+      class="d-block rounded center my-2"
+      width="100%"
+      height="100px"
+    ></canvas>
 
     <div class="container">
       <div class="row">
@@ -156,13 +162,13 @@
                 >Infection Probability</label
               >
               <label for="infect-prob-slider" id="infect-prob-slider-value"
-                >0.1%</label
+                >0.2%</label
               >
               <input
                 type="range"
                 class="custom-range"
                 id="infect-prob-slider"
-                value=".001"
+                value=".002"
                 min=".0001"
                 max=".01"
                 step=".0001"
