@@ -1,4 +1,4 @@
-const CREATURE_SIZE = 10;
+const CREATURE_SIZE = 4;
 const BAR_SIZE = 2;
 
 const COLORS = {
