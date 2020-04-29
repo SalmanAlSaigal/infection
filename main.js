@@ -86,7 +86,7 @@ window.addEventListener("load", () => {
 
 		infProb: infProbSlider.value,
 		healProb: healProbSlider.value,
-		spontaniousInfectionProb: .0001,
+		spontaniousInfectionProb: spontaniousInfectionSlider.value,
 
 		ignoreSocialDistance: ignoreSocialDistanceSlider.value
   };

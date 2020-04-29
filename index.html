@@ -23,6 +23,16 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
   </head>
 
   <body>
@@ -59,12 +69,17 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md d-flex align-items-stretch">
-          <div class="card bg-dark text-white">
-            <div class="card-header">
+        <div class="col-lg my-1 d-flex align-items-stretch">
+          <div class="card w-100 bg-dark text-white">
+            <div
+              class="card-header d-flex justify-content-between align-items-baseline"
+              data-toggle="collapse"
+              data-target=".simulation-card-body"
+            >
               <h5 class="card-title">Simulation</h5>
+              <span>&#x25BC;</span>
             </div>
-            <div class="card-body">
+            <div class="card-body simulation-card-body show">
               <label
                 for="creature-count-slider"
                 id="creature-count-slider-label"
@@ -88,18 +103,23 @@
               </button>
               <button id="play-button" class="btn btn-primary">Pause</button>
             </div>
-            <div class="card-footer">
+            <div class="card-footer simulation-card-body show">
               Changing people count will reset the simulation
             </div>
           </div>
         </div>
 
-        <div class="col-md d-flex align-items-stretch">
-          <div class="card bg-dark text-white">
-            <div class="card-header">
+        <div class="col-lg my-1 d-flex align-items-stretch">
+          <div class="card w-100 bg-dark text-white">
+            <div
+              class="card-header d-flex justify-content-between align-items-baseline"
+              data-toggle="collapse"
+              data-target=".plague-card-body"
+            >
               <h5 class="card-title">Plague</h5>
+              <span>&#x25BC;</span>
             </div>
-            <div class="card-body">
+            <div class="card-body plague-card-body show">
               <label
                 for="infection-radius-slider"
                 id="infection-radius-slider-label"
@@ -170,21 +190,27 @@
               />
             </div>
 
-            <div class="card-footer">
+            <div class="card-footer plague-card-body show">
               Each moment someone spends within this range, they will have this
               probability of being infected
-							</br>
-								Also each moment, any person might be spontaniously infected according to this probability
+              <br />
+              Also each moment, any person might be spontaniously infected
+              according to this probability
             </div>
           </div>
         </div>
 
-        <div class="col-md d-flex align-items-stretch">
-          <div class="card bg-dark text-white">
-            <div class="card-header">
+        <div class="col-lg my-1 d-flex align-items-stretch">
+          <div class="card w-100 bg-dark text-white">
+            <div
+              class="card-header d-flex justify-content-between align-items-baseline"
+              data-toggle="collapse"
+              data-target=".social-distancing-card-body"
+            >
               <h5 class="card-title">Social Distancing</h5>
+              <span>&#x25BC;</span>
             </div>
-            <div class="card-body">
+            <div class="card-body social-distancing-card-body show">
               <label
                 for="social-distance-slider"
                 id="social-distance-slider-label"
@@ -208,11 +234,11 @@
                 id="ignore-social-distance-slider-label"
                 >Social Distancing Ignorers</label
               >
-							<label
-								for="ignore-social-distance-slider"
-								id="ignore-social-distance-slider-value"
-								>0</label
-								>
+              <label
+                for="ignore-social-distance-slider"
+                id="ignore-social-distance-slider-value"
+                >0</label
+              >
               <input
                 type="range"
                 class="custom-range"
@@ -223,7 +249,7 @@
                 step="1"
               />
             </div>
-            <div class="card-footer">
+            <div class="card-footer social-distancing-card-body show">
               People (except ignorers) will move away from others withing this
               distance
             </div>
