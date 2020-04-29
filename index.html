@@ -57,6 +57,69 @@
       height="800px"
     ></canvas>
 
+    <button id="reset-button" class="btn btn-outline-danger">Reset</button>
+    <button id="play-button" class="btn btn-primary">Pause</button>
+    <label for="creature-count-slider">People Count</label>
+    <input
+      type="range"
+      class="custom-range"
+      id="creature-count-slider"
+      value="50"
+      min="10"
+      max="200"
+    />
+    <label for="infection-radius-slider">Infection Range</label>
+    <input
+      type="range"
+      class="custom-range"
+      id="infection-radius-slider"
+      value="50"
+      min="15"
+      max="200"
+    />
+    <label for="social-distance-slider">Social Distancing</label>
+    <input
+      type="range"
+      class="custom-range"
+      id="social-distance-slider"
+      value="0"
+      min="0"
+      max="100"
+      step="1"
+    />
+    <label for="infect-prob-slider">Infection Probability</label>
+    <input
+      type="range"
+      class="custom-range"
+      id="infect-prob-slider"
+      value=".001"
+      min=".0001"
+      max=".01"
+      step=".0001"
+    />
+    <label for="heal-prob-slider">Heal Probability</label>
+    <input
+      type="range"
+      class="custom-range"
+      id="heal-prob-slider"
+      value=".0001"
+      min=".0001"
+      max=".01"
+      step=".0001"
+    />
+    <label for="ignore-social-distance-slider"
+      >Number of people ignoring social distancing</label
+    >
+    <input
+      type="range"
+      class="custom-range"
+      id="ignore-social-distance-slider"
+      value="0"
+      min="0"
+      max="50"
+      step="1"
+    />
+
     <footer class="bg-dark container-fluid text-light text-center mt-4 p-4">
       Made with ♥ by
       <a href="http://github.com/SalmanAlSaigal">Salman AlSaigal</a>
