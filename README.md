@@ -1,4 +1,5 @@
-# pandemic-sim
-A little interactive pandemic simulation *(WIP)*
+# Infection!
 
-[Demo](https://SalmanAlSaigal.github.io/pandemic-sim)
+A fun little interactive simulation about a pandemic
+
+[Play with it!](https://SalmanAlSaigal.github.io/pandemic-sim)
