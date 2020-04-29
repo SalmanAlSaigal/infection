@@ -29,6 +29,7 @@ window.addEventListener("load", () => {
     "creature-count-slider"
   );
   creatureCountSlider.addEventListener("change", (e) => {
+		document.getElementById('creature-count-slider-value').innerHTML = e.target.value;
     options.creatureCount = e.target.value;
 		genesis(options.creatureCount)
   });
@@ -36,30 +37,42 @@ window.addEventListener("load", () => {
     "infection-radius-slider"
   );
   infectionRadiusSlider.addEventListener("input", (e) => {
+		document.getElementById('infection-radius-slider-value').innerHTML = e.target.value;
     options.infectionRadius = e.target.value;
   });
   var socialDistanceSlider = document.getElementById(
     "social-distance-slider"
   );
   socialDistanceSlider.addEventListener("input", (e) => {
+		document.getElementById('social-distance-slider-value').innerHTML = e.target.value;
     options.socialDistance = e.target.value;
   });
   var infProbSlider = document.getElementById(
     "infect-prob-slider"
   );
   infProbSlider.addEventListener("input", (e) => {
+		document.getElementById('infect-prob-slider-value').innerHTML = `${Math.floor(e.target.value * 10000)/100}%`;
     options.infProb = e.target.value;
   });
   var healProbSlider = document.getElementById(
     "heal-prob-slider"
   );
   healProbSlider.addEventListener("input", (e) => {
+		document.getElementById('heal-prob-slider-value').innerHTML = `${Math.floor(e.target.value * 10000)/100}%`;
     options.healProb = e.target.value;
   });
   var ignoreSocialDistanceSlider = document.getElementById(
     "ignore-social-distance-slider"
   );
   ignoreSocialDistanceSlider.addEventListener("input", (e) => {
+		document.getElementById('ignore-social-distance-slider-value').innerHTML = e.target.value;
+    options.ignoreSocialDistance = e.target.value;
+  });
+  var spontaniousInfectionSlider = document.getElementById(
+    "spontanious-infection-slider"
+  );
+  spontaniousInfectionSlider.addEventListener("input", (e) => {
+		document.getElementById('spontanious-infection-slider-value').innerHTML = `${Math.floor(e.target.value * 1000000)/10000}%`;
     options.ignoreSocialDistance = e.target.value;
   });
 

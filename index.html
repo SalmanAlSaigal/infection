@@ -25,7 +25,7 @@
     />
   </head>
 
-  <body class="bg-dark">
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Pandemic Simulation</a>
       <button
@@ -52,73 +52,185 @@
 
     <canvas
       id="simulation"
-      class="d-block rounded center"
+      class="d-block rounded center my-2"
       width="100%"
       height="800px"
     ></canvas>
 
-    <button id="reset-button" class="btn btn-outline-danger">Reset</button>
-    <button id="play-button" class="btn btn-primary">Pause</button>
-    <label for="creature-count-slider">People Count</label>
-    <input
-      type="range"
-      class="custom-range"
-      id="creature-count-slider"
-      value="50"
-      min="10"
-      max="200"
-    />
-    <label for="infection-radius-slider">Infection Range</label>
-    <input
-      type="range"
-      class="custom-range"
-      id="infection-radius-slider"
-      value="50"
-      min="15"
-      max="200"
-    />
-    <label for="social-distance-slider">Social Distancing</label>
-    <input
-      type="range"
-      class="custom-range"
-      id="social-distance-slider"
-      value="0"
-      min="0"
-      max="100"
-      step="1"
-    />
-    <label for="infect-prob-slider">Infection Probability</label>
-    <input
-      type="range"
-      class="custom-range"
-      id="infect-prob-slider"
-      value=".001"
-      min=".0001"
-      max=".01"
-      step=".0001"
-    />
-    <label for="heal-prob-slider">Heal Probability</label>
-    <input
-      type="range"
-      class="custom-range"
-      id="heal-prob-slider"
-      value=".0001"
-      min=".0001"
-      max=".01"
-      step=".0001"
-    />
-    <label for="ignore-social-distance-slider"
-      >Number of people ignoring social distancing</label
-    >
-    <input
-      type="range"
-      class="custom-range"
-      id="ignore-social-distance-slider"
-      value="0"
-      min="0"
-      max="50"
-      step="1"
-    />
+    <div class="container">
+      <div class="row">
+        <div class="col-md d-flex align-items-stretch">
+          <div class="card bg-dark text-white">
+            <div class="card-header">
+              <h5 class="card-title">Simulation</h5>
+            </div>
+            <div class="card-body">
+              <label
+                for="creature-count-slider"
+                id="creature-count-slider-label"
+                >People Count</label
+              >
+              <label
+                for="creature-count-slider"
+                id="creature-count-slider-value"
+                >50</label
+              >
+              <input
+                type="range"
+                class="custom-range"
+                id="creature-count-slider"
+                value="50"
+                min="10"
+                max="200"
+              />
+              <button id="reset-button" class="btn btn-outline-secondary">
+                Reset
+              </button>
+              <button id="play-button" class="btn btn-primary">Pause</button>
+            </div>
+            <div class="card-footer">
+              Changing people count will reset the simulation
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md d-flex align-items-stretch">
+          <div class="card bg-dark text-white">
+            <div class="card-header">
+              <h5 class="card-title">Plague</h5>
+            </div>
+            <div class="card-body">
+              <label
+                for="infection-radius-slider"
+                id="infection-radius-slider-label"
+                >Infection Range</label
+              >
+              <label
+                for="infection-radius-slider"
+                id="infection-radius-slider-value"
+                >50</label
+              >
+              <input
+                type="range"
+                class="custom-range"
+                id="infection-radius-slider"
+                value="50"
+                min="15"
+                max="200"
+              />
+
+              <label for="infect-prob-slider" id="infect-prob-slider-label"
+                >Infection Probability</label
+              >
+              <label for="infect-prob-slider" id="infect-prob-slider-value"
+                >0.1%</label
+              >
+              <input
+                type="range"
+                class="custom-range"
+                id="infect-prob-slider"
+                value=".001"
+                min=".0001"
+                max=".01"
+                step=".0001"
+              />
+              <label for="heal-prob-slider" id="heal-prob-slider-label"
+                >Heal Probability</label
+              >
+              <label for="heal-prob-slider" id="heal-prob-slider-value"
+                >0.01%</label
+              >
+              <input
+                type="range"
+                class="custom-range"
+                id="heal-prob-slider"
+                value=".0001"
+                min=".0001"
+                max=".01"
+                step=".0001"
+              />
+              <label
+                for="spontanious-infection-slider"
+                id="spontanious-infection-slider-label"
+                >Spontanious Infection Probability</label
+              >
+              <label
+                for="spontanious-infection-slider"
+                id="spontanious-infection-slider-value"
+                >0.0001%</label
+              >
+              <input
+                type="range"
+                class="custom-range"
+                id="spontanious-infection-slider"
+                value=".000001"
+                min="0"
+                max=".01"
+                step=".0001"
+              />
+            </div>
+
+            <div class="card-footer">
+              Each moment someone spends within this range, they will have this
+              probability of being infected
+							</br>
+								Also each moment, any person might be spontaniously infected according to this probability
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md d-flex align-items-stretch">
+          <div class="card bg-dark text-white">
+            <div class="card-header">
+              <h5 class="card-title">Social Distancing</h5>
+            </div>
+            <div class="card-body">
+              <label
+                for="social-distance-slider"
+                id="social-distance-slider-label"
+                >Social Distancing</label
+              >
+              <label
+                for="social-distance-slider"
+                id="social-distance-slider-value"
+                >0</label
+              >
+              <input
+                type="range"
+                class="custom-range"
+                id="social-distance-slider"
+                value="0"
+                min="0"
+                max="100"
+              />
+              <label
+                for="ignore-social-distance-slider"
+                id="ignore-social-distance-slider-label"
+                >Social Distancing Ignorers</label
+              >
+							<label
+								for="ignore-social-distance-slider"
+								id="ignore-social-distance-slider-value"
+								>0</label
+								>
+              <input
+                type="range"
+                class="custom-range"
+                id="ignore-social-distance-slider"
+                value="0"
+                min="0"
+                max="50"
+                step="1"
+              />
+            </div>
+            <div class="card-footer">
+              People (except ignorers) will move away from others withing this
+              distance
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <footer class="bg-dark container-fluid text-light text-center mt-4 p-4">
       Made with ♥ by
