@@ -1,4 +1,4 @@
-const BAR_SIZE = 2;
+const BAR_SIZE = 5;
 
 const COLORS = {
   background: "#161616",
@@ -228,7 +228,7 @@ window.addEventListener("load", () => {
       creatures.forEach(({ state }) => graphDataInsert[state]++);
       graphData.push(graphDataInsert);
       if (graphData.length * BAR_SIZE > gCanvas.width) {
-        graphData = graphData.slice(Math.floor(graphData.length * 0.3));
+        graphData = graphData.slice(Math.floor(graphData.length * .3));
       }
     }
     updateCount++;
@@ -279,7 +279,7 @@ window.addEventListener("load", () => {
 			gctx.fillRect(0, 0, gCanvas.width, gCanvas.height);
 			const graphLength = graphData.length
 			graphData.forEach(({ sus, inf, rem }, index) => {
-				const x = index * BAR_SIZE /2;
+				const x = index * BAR_SIZE;
 
 				const remBarHeight = (rem / options.creatureCount) * gCanvas.height;
 				const infBarHeight = (inf / options.creatureCount) * gCanvas.height;
@@ -290,7 +290,7 @@ window.addEventListener("load", () => {
 				gctx.fillRect(
 					x,
 					currentHeight,
-					x + BAR_SIZE,
+					BAR_SIZE,
 					remBarHeight
 				);
 				currentHeight += remBarHeight;
@@ -299,7 +299,7 @@ window.addEventListener("load", () => {
 				gctx.fillRect(
 					x,
 					currentHeight,
-					x + BAR_SIZE,
+					BAR_SIZE,
 					susBarHeight
 				);
 				currentHeight += susBarHeight;
@@ -308,7 +308,7 @@ window.addEventListener("load", () => {
 				gctx.fillRect(
 					x,
 					currentHeight,
-					x + BAR_SIZE,
+					BAR_SIZE,
 					infBarHeight
 				);
 				currentHeight += infBarHeight;
