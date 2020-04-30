@@ -147,15 +147,16 @@
               <label
                 for="infection-radius-slider"
                 id="infection-radius-slider-value"
-                >20</label
+                >2</label
               >
               <input
                 type="range"
                 class="custom-range"
                 id="infection-radius-slider"
-                value="20"
-                min="10"
-                max="40"
+                value="5"
+                min="2"
+                max="10"
+                step=".1"
               />
 
               <label for="infect-prob-slider" id="infect-prob-slider-label"
@@ -204,7 +205,7 @@
                 id="spontanious-infection-slider"
                 value=".000001"
                 min="0"
-                max=".01"
+                max=".001"
                 step=".0001"
               />
             </div>
@@ -246,7 +247,8 @@
                 id="social-distance-slider"
                 value="0"
                 min="0"
-                max="40"
+                max="10"
+                step=".1"
               />
               <label
                 for="ignore-social-distance-slider"

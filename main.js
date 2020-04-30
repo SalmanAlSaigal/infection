@@ -1,4 +1,3 @@
-const CREATURE_SIZE = 4;
 const BAR_SIZE = 2;
 
 const COLORS = {
@@ -76,7 +75,7 @@ window.addEventListener("load", () => {
     document.getElementById(
       "spontanious-infection-slider-value"
     ).innerHTML = `${Math.floor(e.target.value * 1000000) / 10000}%`;
-    options.ignoreSocialDistance = e.target.value;
+    options.spontaniousInfectionProb = e.target.value;
   });
 
   // User interaction options
@@ -102,7 +101,7 @@ window.addEventListener("load", () => {
 	let lastDrawnGraphLength =0;
 
   let [topLeft, bottomRight] = [
-    new Victor(CREATURE_SIZE, CREATURE_SIZE),
+    new Victor(options.creatureSize, options.creatureSize),
     new Victor(canvas.width, canvas.height),
   ];
 
@@ -112,7 +111,8 @@ window.addEventListener("load", () => {
     canvas.height = "500";
     gCanvas.width = window.innerWidth * 0.9;
     gCanvas.height = "100";
-    bottomRight = new Victor(canvas.width - CREATURE_SIZE, 500 - CREATURE_SIZE);
+    bottomRight = new Victor(canvas.width - options.creatureSize, 500 - options.creatureSize);
+		options.creatureSize = window.innerWidth / 100;
   };
   setCanvasSize();
   window.addEventListener("resize", setCanvasSize, false);
@@ -150,7 +150,7 @@ window.addEventListener("load", () => {
         if (
           c1 !== c2 &&
           !c1.neighbours.includes(c2) &&
-          c1.pos.distance(c2.pos) < options.socialDistance
+          c1.pos.distance(c2.pos) < options.creatureSize * options.socialDistance
         ) {
           c1.neighbours.push(c2);
           c2.neighbours.push(c1);
@@ -165,7 +165,7 @@ window.addEventListener("load", () => {
         (c.state === "sus" &&
           infected.some(({ pos: infPos }) => {
             const withinReact =
-              c.pos.distance(infPos) < options.infectionRadius;
+              c.pos.distance(infPos) < options.creatureSize * options.infectionRadius;
             const incident = Math.random() < options.infProb;
 
             return withinReact && incident;
@@ -177,18 +177,18 @@ window.addEventListener("load", () => {
 
       // Keep creatures inside box
       let outOfBounds = false;
-      if (c.pos.x <= CREATURE_SIZE) {
-        c.pos.x = CREATURE_SIZE;
+      if (c.pos.x <= options.creatureSize) {
+        c.pos.x = options.creatureSize;
         outOfBounds = true;
-      } else if (c.pos.x > canvas.width - CREATURE_SIZE) {
-        c.pos.x = canvas.width - CREATURE_SIZE;
+      } else if (c.pos.x > canvas.width - options.creatureSize) {
+        c.pos.x = canvas.width - options.creatureSize;
         outOfBounds = true;
       }
-      if (c.pos.y < CREATURE_SIZE) {
-        c.pos.y = CREATURE_SIZE;
+      if (c.pos.y < options.creatureSize) {
+        c.pos.y = options.creatureSize;
         outOfBounds = true;
-      } else if (c.pos.y > canvas.height - CREATURE_SIZE) {
-        c.pos.y = canvas.height - CREATURE_SIZE;
+      } else if (c.pos.y > canvas.height - options.creatureSize) {
+        c.pos.y = canvas.height - options.creatureSize;
         outOfBounds = true;
       }
 
@@ -244,7 +244,7 @@ window.addEventListener("load", () => {
       ({ pos: { x, y }, vel, acc, state, neighbours = [] }, index) => {
         ctx.beginPath();
         ctx.fillStyle = COLORS[state];
-        ctx.arc(x, y, CREATURE_SIZE, 0, 2 * Math.PI);
+        ctx.arc(x, y, options.creatureSize, 0, 2 * Math.PI);
         ctx.fill();
         if (index < options.ignoreSocialDistance) {
           ctx.strokeStyle = COLORS.ignore_social_distance;
@@ -254,14 +254,14 @@ window.addEventListener("load", () => {
         if (state === "inf") {
           ctx.beginPath();
           ctx.fillStyle = COLORS.inf_glow;
-          ctx.arc(x, y, options.infectionRadius, 0, 2 * Math.PI);
+          ctx.arc(x, y, options.creatureSize * options.infectionRadius, 0, 2 * Math.PI);
           ctx.fill();
         }
 
-        ctx.beginPath();
-        ctx.fillStyle = COLORS.social_distance;
-        ctx.arc(x, y, options.socialDistance, 0, 2 * Math.PI);
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.fillStyle = COLORS.social_distance;
+        // ctx.arc(x, y, options.creatureSize * options.socialDistance, 0, 2 * Math.PI);
+        // ctx.fill();
 
         ctx.lineWidth = 3;
         ctx.strokeStyle = COLORS.social_distance;
