@@ -144,7 +144,7 @@ window.addEventListener("load", () => {
           Math.random() * canvas.height
         ),
         vel: new Victor(),
-        acc: new Victor(Math.random() * 2 - 1, Math.random() * 2 - 1), // Generate at random between -1 and 1
+        acc: new Victor(),
         state: "sus", // Possible states are Susciptable(sus), Infected(inf), and Removed(rem)
       });
     creatures[0].state = "inf";
@@ -228,14 +228,17 @@ window.addEventListener("load", () => {
 
           c.acc.add(diff);
         });
-      } else if (c.acc.length() === 0 || Math.random() > 0.97 || outOfBounds) {
+      } else if (c.acc.length() === 0 || outOfBounds) {
         // Change acceleration randomly on whenever you hit a wall
-        c.acc = new Victor(Math.random() * 2 - 1, Math.random() * 2 - 1);
-        c.acc.normalize();
-      }
+				c.vel = new Victor()
+				c.acc = new Victor(2 * (Math.random() - .5), 2 * (Math.random() - .5));
+				// c.acc.normalize();
+      }else if ( Math.random() > .9 ){
+				c.acc.rotateDeg(360 * (Math.random() - .5))
+			}
 
       c.vel.add(c.acc);
-      c.vel.limit(3, 0.5);
+      c.vel.limit(2, 0.5);
       c.pos.add(c.vel);
     });
 
