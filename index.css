@@ -16,6 +16,11 @@ html, body {
 	color: #ffa9fa;
 }
 
+.logo {
+	width: 32px;
+	height: 32px;
+}
+
 input[type=range] {
   -webkit-appearance: none;
   margin: 18px 0;
