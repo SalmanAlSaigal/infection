@@ -10,3 +10,8 @@ html, body {
 #simulation, #graph {
 	margin: 0 auto;
 }
+
+.configurable {
+	font-style: italic;
+	color: #ffa9fa;
+}

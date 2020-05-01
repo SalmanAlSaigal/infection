@@ -1,4 +1,4 @@
-const BAR_SIZE = 5;
+const BAR_SIZE = 2;
 
 const COLORS = {
   background: "#161616",
@@ -14,6 +14,16 @@ const COLORS = {
 };
 
 window.addEventListener("load", () => {
+  document.getElementById("help-button").addEventListener("click", () => {
+    $("#help-modal").modal("show");
+  });
+  if (localStorage.getItem("disableHelp") !== "true") $("#help-modal").modal("show");
+  const disableHelpCheckbox = document.getElementById("hide-help-checkbox");
+  disableHelpCheckbox.checked = localStorage.getItem("disableHelp") === "true";
+  disableHelpCheckbox.addEventListener("click", (e) => {
+    localStorage.setItem("disableHelp", e.target.checked);
+  });
+
   // Handle user input
   var playButton = document.getElementById("play-button");
   playButton.addEventListener("click", () => {
@@ -98,7 +108,7 @@ window.addEventListener("load", () => {
   const gCanvas = document.getElementById("graph");
   const gctx = gCanvas.getContext("2d");
   let graphData = [];
-	let lastDrawnGraphLength =0;
+  let lastDrawnGraphLength = 0;
 
   let [topLeft, bottomRight] = [
     new Victor(options.creatureSize, options.creatureSize),
@@ -111,8 +121,11 @@ window.addEventListener("load", () => {
     canvas.height = "500";
     gCanvas.width = window.innerWidth * 0.9;
     gCanvas.height = "100";
-    bottomRight = new Victor(canvas.width - options.creatureSize, 500 - options.creatureSize);
-		options.creatureSize = window.innerWidth / 100;
+    bottomRight = new Victor(
+      canvas.width - options.creatureSize,
+      500 - options.creatureSize
+    );
+    options.creatureSize = window.innerWidth / 100;
   };
   setCanvasSize();
   window.addEventListener("resize", setCanvasSize, false);
@@ -150,7 +163,8 @@ window.addEventListener("load", () => {
         if (
           c1 !== c2 &&
           !c1.neighbours.includes(c2) &&
-          c1.pos.distance(c2.pos) < options.creatureSize * options.socialDistance
+          c1.pos.distance(c2.pos) <
+            options.creatureSize * options.socialDistance
         ) {
           c1.neighbours.push(c2);
           c2.neighbours.push(c1);
@@ -165,7 +179,8 @@ window.addEventListener("load", () => {
         (c.state === "sus" &&
           infected.some(({ pos: infPos }) => {
             const withinReact =
-              c.pos.distance(infPos) < options.creatureSize * options.infectionRadius;
+              c.pos.distance(infPos) <
+              options.creatureSize * options.infectionRadius;
             const incident = Math.random() < options.infProb;
 
             return withinReact && incident;
@@ -203,23 +218,26 @@ window.addEventListener("load", () => {
           const distance = c.pos.distance(n.pos);
           const diff = c.pos.clone();
           diff.subtract(n.pos);
+
           diff.x /= distance;
           diff.y /= distance;
+					diff.x *= Math.random();
+					diff.y *= Math.random();
+
           c.acc.add(diff);
         });
-      } else if (c.acc.length() === 0 || Math.random() > 0.95 || outOfBounds) {
+      } else if (c.acc.length() === 0 || Math.random() > 0.97 || outOfBounds) {
         // Change acceleration randomly on whenever you hit a wall
         c.acc = new Victor(Math.random() * 2 - 1, Math.random() * 2 - 1);
         c.acc.normalize();
       }
 
       c.vel.add(c.acc);
-      c.vel.limit(1, 0.1);
+      c.vel.limit(3, 0.5);
       c.pos.add(c.vel);
     });
 
-    // Only update graph once every 10 updates
-    if (updateCount % 16 === 0) {
+    if (updateCount % 2 === 0) {
       let graphDataInsert = {
         sus: 0,
         inf: 0,
@@ -228,7 +246,7 @@ window.addEventListener("load", () => {
       creatures.forEach(({ state }) => graphDataInsert[state]++);
       graphData.push(graphDataInsert);
       if (graphData.length * BAR_SIZE > gCanvas.width) {
-        graphData = graphData.slice(Math.floor(graphData.length * .3));
+        graphData = graphData.slice(Math.floor(graphData.length * 0.3));
       }
     }
     updateCount++;
@@ -254,7 +272,13 @@ window.addEventListener("load", () => {
         if (state === "inf") {
           ctx.beginPath();
           ctx.fillStyle = COLORS.inf_glow;
-          ctx.arc(x, y, options.creatureSize * options.infectionRadius, 0, 2 * Math.PI);
+          ctx.arc(
+            x,
+            y,
+            options.creatureSize * options.infectionRadius,
+            0,
+            2 * Math.PI
+          );
           ctx.fill();
         }
 
@@ -274,47 +298,32 @@ window.addEventListener("load", () => {
       }
     );
 
-		if(graphData.length !== lastDrawnGraphLength){
-			gctx.fillStyle = COLORS.background;
-			gctx.fillRect(0, 0, gCanvas.width, gCanvas.height);
-			const graphLength = graphData.length
-			graphData.forEach(({ sus, inf, rem }, index) => {
-				const x = index * BAR_SIZE;
+    if (graphData.length !== lastDrawnGraphLength) {
+      gctx.fillStyle = COLORS.background;
+      gctx.fillRect(0, 0, gCanvas.width, gCanvas.height);
+      const graphLength = graphData.length;
+      graphData.forEach(({ sus, inf, rem }, index) => {
+        const x = index * BAR_SIZE;
 
-				const remBarHeight = (rem / options.creatureCount) * gCanvas.height;
-				const infBarHeight = (inf / options.creatureCount) * gCanvas.height;
-				const susBarHeight = (sus / options.creatureCount) * gCanvas.height;
+        const remBarHeight = (rem / options.creatureCount) * gCanvas.height;
+        const infBarHeight = (inf / options.creatureCount) * gCanvas.height;
+        const susBarHeight = (sus / options.creatureCount) * gCanvas.height;
 
-				let currentHeight = 0;
-				gctx.fillStyle = COLORS.rem;
-				gctx.fillRect(
-					x,
-					currentHeight,
-					BAR_SIZE,
-					remBarHeight
-				);
-				currentHeight += remBarHeight;
+        let currentHeight = 0;
+        gctx.fillStyle = COLORS.rem;
+        gctx.fillRect(x, currentHeight, BAR_SIZE, remBarHeight);
+        currentHeight += remBarHeight;
 
-				gctx.fillStyle = COLORS.sus;
-				gctx.fillRect(
-					x,
-					currentHeight,
-					BAR_SIZE,
-					susBarHeight
-				);
-				currentHeight += susBarHeight;
+        gctx.fillStyle = COLORS.sus;
+        gctx.fillRect(x, currentHeight, BAR_SIZE, susBarHeight);
+        currentHeight += susBarHeight;
 
-				gctx.fillStyle = COLORS.inf;
-				gctx.fillRect(
-					x,
-					currentHeight,
-					BAR_SIZE,
-					infBarHeight
-				);
-				currentHeight += infBarHeight;
-			});
-			lastDrawnGraphLength = graphLength
-		}
+        gctx.fillStyle = COLORS.inf;
+        gctx.fillRect(x, currentHeight, BAR_SIZE, infBarHeight);
+        currentHeight += infBarHeight;
+      });
+      lastDrawnGraphLength = graphLength;
+    }
 
     requestAnimationFrame(render);
   };

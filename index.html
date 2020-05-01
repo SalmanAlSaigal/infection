@@ -65,13 +65,121 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="http://github.com/SalmanAlSaigal"
-              >Github</a
+            <a id="help-button" class="nav-link" href="#">WTF is this?</a>
+          </li>
+          <li class="nav-item">
+            <a
+              id="help-button"
+              class="nav-link"
+              href="https://twitter.com/intent/tweet?text=Check%20out%20these%20feccing%20people%20not%20socially%20distancing!%20%23StaySafe%20%23InfectionSim%0Ahttps://SalmanAlSaigal.github.io/infection"
+              >Bitch about it on Twitter!</a
             >
           </li>
         </ul>
       </div>
     </nav>
+
+    <div id="help-modal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark text-light">
+          <div class="modal-header">
+            <h5 class="modal-title">WTF is this, Salman?</h5>
+            <button
+              type="button"
+              class="close text-light"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <p class="text-center">
+              It's a pandemic simulation! 🧟
+            </p>
+            <p>
+              Basically, there are a
+              <span class="configurable">number of people</span> 🔵 and a virus
+              going around! Some people might randomly get infected 🔴, and
+              anybody <span class="configurable">near them</span>, will have
+              <span class="configurable">a chance</span> of getting infected as
+              well! People have a change of healing after a while ⚪
+            </p>
+            <img
+              class="d-block mx-auto rounded my-1 w-50"
+              src="/infected.png"
+            />
+            <p>
+              Enabling
+              <span class="configurable">social distancing</span> 🏃 might
+              flatten the curve of the disease 📉
+            </p>
+            <div class="row">
+              <div class="col">
+                <img
+                  class="d-block mx-auto rounded my-1 w-100"
+                  src="/no-social-distancing.png"
+                />
+                <img
+                  class="d-block mx-auto rounded my-1 w-100 h-25"
+                  src="/bad-graph.png"
+                />
+                <p class="text-center">No social distancing</p>
+              </div>
+              <div class="col">
+                <img
+                  class="d-block mx-auto rounded my-1 w-100"
+                  src="/social-distancing.png"
+                />
+                <img
+                  class="d-block mx-auto rounded my-1 w-100 h-25"
+                  src="/good-graph.png"
+                />
+                <p class="text-center">With social distancing</p>
+              </div>
+            </div>
+
+            <p>
+              You can also see that if some 😈
+              <span class="configurable">ignore</span>
+              <span class="configurable">social distancing</span> and they get
+              sick, they might just fuck up everything for everybody 😯
+            </p>
+            <img
+              class="d-block mx-auto rounded my-1 w-50"
+              src="/ignorers.png"
+            />
+            <p>
+              Now you can bitch about people going out during quarantine on
+              twitter and you can show them this simulation!
+            </p>
+
+            <p class="font-weight-light">
+              The text like <span class="configurable">this</span> can be edited
+              in the sliders below. <strong>Have fun!</strong>
+            </p>
+            <p></p>
+
+            <p></p>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <div>
+              <input id="hide-help-checkbox" type="checkbox" class="checkbox" />
+              <label for="hide-help-checkbox">Dont show again</label>
+            </div>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <canvas
       id="simulation"
@@ -102,7 +210,7 @@
               <label
                 for="creature-count-slider"
                 id="creature-count-slider-label"
-                >People Count</label
+                >People Count 👨‍👩‍👧‍👦</label
               >
               <label
                 for="creature-count-slider"
@@ -142,7 +250,7 @@
               <label
                 for="infection-radius-slider"
                 id="infection-radius-slider-label"
-                >Infection Range</label
+                >Infection Range ⭕</label
               >
               <label
                 for="infection-radius-slider"
@@ -160,7 +268,7 @@
               />
 
               <label for="infect-prob-slider" id="infect-prob-slider-label"
-                >Infection Probability</label
+                >Disease Strength 💪</label
               >
               <label for="infect-prob-slider" id="infect-prob-slider-value"
                 >0.2%</label
@@ -174,10 +282,10 @@
                 max=".01"
                 step=".0001"
               />
-              <label for="heal-prob-slider" id="heal-prob-slider-label"
+              <label for="heal-prob-slider" id="heal-prob-slider-label" hidden
                 >Heal Probability</label
               >
-              <label for="heal-prob-slider" id="heal-prob-slider-value"
+              <label for="heal-prob-slider" id="heal-prob-slider-value" hidden
                 >0.01%</label
               >
               <input
@@ -188,15 +296,18 @@
                 min=".0001"
                 max=".01"
                 step=".0001"
+                hidden
               />
               <label
                 for="spontanious-infection-slider"
                 id="spontanious-infection-slider-label"
+                hidden
                 >Spontanious Infection Probability</label
               >
               <label
                 for="spontanious-infection-slider"
                 id="spontanious-infection-slider-value"
+                hidden
                 >0.0001%</label
               >
               <input
@@ -207,6 +318,7 @@
                 min="0"
                 max=".001"
                 step=".0001"
+                hidden
               />
             </div>
 
@@ -234,7 +346,7 @@
               <label
                 for="social-distance-slider"
                 id="social-distance-slider-label"
-                >Social Distancing</label
+                >Social Distancing Length 🏃</label
               >
               <label
                 for="social-distance-slider"
@@ -253,7 +365,7 @@
               <label
                 for="ignore-social-distance-slider"
                 id="ignore-social-distance-slider-label"
-                >Social Distancing Ignorers</label
+                >Social Distancing Ignorers 😈</label
               >
               <label
                 for="ignore-social-distance-slider"
