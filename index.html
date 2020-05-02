@@ -39,7 +39,7 @@
 
     <link rel="manifest" href="manifest.json" />
     <link rel="apple-touch-icon" href="icon.png" />
- <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 
     <meta name="theme-color" content="#121212" />
 
@@ -227,12 +227,12 @@
               <label
                 for="creature-count-slider"
                 id="creature-count-slider-value"
-                >100</label
+                >60</label
               >
               <input
                 type="range"
                 id="creature-count-slider"
-                value="100"
+                value="60"
                 min="10"
                 max="200"
               />
@@ -261,32 +261,35 @@
               <label
                 for="infection-radius-slider"
                 id="infection-radius-slider-label"
+                hidden
                 >Infection Range ⭕</label
               >
               <label
                 for="infection-radius-slider"
                 id="infection-radius-slider-value"
-                >2</label
+                hidden
+                >7</label
               >
               <input
                 type="range"
                 id="infection-radius-slider"
-                value="5"
+                value="7"
                 min="2"
                 max="10"
                 step=".1"
+                hidden
               />
 
               <label for="infect-prob-slider" id="infect-prob-slider-label"
                 >Disease Strength 💪</label
               >
               <label for="infect-prob-slider" id="infect-prob-slider-value"
-                >0.2%</label
+                >0.5%</label
               >
               <input
                 type="range"
                 id="infect-prob-slider"
-                value=".002"
+                value=".005"
                 min=".0001"
                 max=".01"
                 step=".0001"
@@ -295,12 +298,12 @@
                 >Heal Probability</label
               >
               <label for="heal-prob-slider" id="heal-prob-slider-value" hidden
-                >0.01%</label
+                >0.05%</label
               >
               <input
                 type="range"
                 id="heal-prob-slider"
-                value=".0001"
+                value=".0005"
                 min=".0001"
                 max=".01"
                 step=".0001"
@@ -316,12 +319,12 @@
                 for="spontanious-infection-slider"
                 id="spontanious-infection-slider-value"
                 hidden
-                >0.0001%</label
+                >0.0002%</label
               >
               <input
                 type="range"
                 id="spontanious-infection-slider"
-                value=".000001"
+                value=".000002"
                 min="0"
                 max=".001"
                 step=".0001"
@@ -330,11 +333,8 @@
             </div>
 
             <div class="card-footer plague-card-body show">
-              Each moment someone spends within this range, they will have this
-              probability of being infected
-              <br />
-              Also each moment, any person might be spontaniously infected
-              according to this probability
+              The higher the strength, the more probable people are to be
+              infected on contact with a sick person
             </div>
           </div>
         </div>

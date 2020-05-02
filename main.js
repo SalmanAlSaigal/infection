@@ -1,4 +1,4 @@
-const BAR_SIZE = 2;
+const BAR_SIZE = 1;
 
 const COLORS = {
   background: "#161616",
@@ -242,7 +242,7 @@ window.addEventListener("load", () => {
       c.pos.add(c.vel);
     });
 
-    if (updateCount % 2 === 0) {
+    if (updateCount % 10 === 0) {
       let graphDataInsert = {
         sus: 0,
         inf: 0,
@@ -333,7 +333,7 @@ window.addEventListener("load", () => {
 			gctx.font = `${textSize}px monospace`
 			gctx.fillStyle = 'black';
 			graphData.forEach(({time, sus, inf, rem}, index) => {
-				if(index % 100 === 0)
+				if(index % 150 === 0)
 				{
 					gctx.fillStyle = '#0004';
 					gctx.fillRect(index*BAR_SIZE, 0, 100, gCanvas.height);
