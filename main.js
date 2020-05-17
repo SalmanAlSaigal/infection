@@ -17,7 +17,8 @@ window.addEventListener("load", () => {
   document.getElementById("help-button").addEventListener("click", () => {
     $("#help-modal").modal("show");
   });
-  if (localStorage.getItem("disableHelp") !== "true") $("#help-modal").modal("show");
+  if (localStorage.getItem("disableHelp") !== "true")
+    $("#help-modal").modal("show");
   const disableHelpCheckbox = document.getElementById("hide-help-checkbox");
   disableHelpCheckbox.checked = localStorage.getItem("disableHelp") === "true";
   disableHelpCheckbox.addEventListener("click", (e) => {
@@ -125,7 +126,22 @@ window.addEventListener("load", () => {
       canvas.width - options.creatureSize,
       500 - options.creatureSize
     );
-    options.creatureSize = window.innerWidth / 100;
+    options.creatureSize =
+      window.innerWidth < 500
+        ? 3
+        : window.innerWidth < 800
+        ? 4
+        : window.innerWidth < 1000
+        ? 5
+        : 7;
+    options.infectionRadius =
+      (window.innerWidth < 500
+        ? 2
+        : window.innerWidth < 800
+        ? 1.5
+        : window.innerWidth < 1000
+        ? 1
+        : 0.8) * options.creatureSize;
   };
   setCanvasSize();
   window.addEventListener("resize", setCanvasSize, false);
@@ -133,7 +149,7 @@ window.addEventListener("load", () => {
   // Generate creatures
   let updateCount = 0;
   let creatures = [];
-	let startTime;
+  let startTime;
   var genesis = (creatureCount) => {
     graphData = [];
     creatures = [];
@@ -149,7 +165,7 @@ window.addEventListener("load", () => {
       });
     creatures[0].state = "inf";
     updateCount = 0;
-		startTime = Date.now();
+    startTime = Date.now();
   };
   genesis(options.creatureCount);
 
@@ -223,19 +239,22 @@ window.addEventListener("load", () => {
 
           diff.x /= distance;
           diff.y /= distance;
-					diff.x *= Math.random();
-					diff.y *= Math.random();
+          diff.x *= Math.random();
+          diff.y *= Math.random();
 
           c.acc.add(diff);
         });
       } else if (c.acc.length() === 0 || outOfBounds) {
         // Change acceleration randomly on whenever you hit a wall
-				c.vel = new Victor()
-				c.acc = new Victor(2 * (Math.random() - .5), 2 * (Math.random() - .5));
-				// c.acc.normalize();
-      }else if ( Math.random() > .9 ){
-				c.acc.rotateDeg(360 * (Math.random() - .5))
-			}
+        c.vel = new Victor();
+        c.acc = new Victor(
+          2 * (Math.random() - 0.5),
+          2 * (Math.random() - 0.5)
+        );
+        // c.acc.normalize();
+      } else if (Math.random() > 0.9) {
+        c.acc.rotateDeg(360 * (Math.random() - 0.5));
+      }
 
       c.vel.add(c.acc);
       c.vel.limit(2, 0.5);
@@ -247,7 +266,7 @@ window.addEventListener("load", () => {
         sus: 0,
         inf: 0,
         rem: 0,
-				time: Math.floor((Date.now() - startTime) / 100) / 10
+        time: Math.floor((Date.now() - startTime) / 100) / 10,
       };
       creatures.forEach(({ state }) => graphDataInsert[state]++);
       graphData.push(graphDataInsert);
@@ -329,27 +348,26 @@ window.addEventListener("load", () => {
         currentHeight += infBarHeight;
       });
 
-			const textSize = 18
-			gctx.font = `${textSize}px monospace`
-			gctx.fillStyle = 'black';
-			graphData.forEach(({time, sus, inf, rem}, index) => {
-				if(index % 150 === 0)
-				{
-					gctx.fillStyle = '#0004';
-					gctx.fillRect(index*BAR_SIZE, 0, 100, gCanvas.height);
+      const textSize = 18;
+      gctx.font = `${textSize}px monospace`;
+      gctx.fillStyle = "black";
+      graphData.forEach(({ time, sus, inf, rem }, index) => {
+        if (index % 150 === 0) {
+          gctx.fillStyle = "#0004";
+          gctx.fillRect(index * BAR_SIZE, 0, 100, gCanvas.height);
 
-					gctx.fillStyle = '#fff';
-					gctx.fillRect(index * BAR_SIZE, 0, 1, gCanvas.height);
-					gctx.fillText(`${time} sec`, index * BAR_SIZE + 16, textSize)
+          gctx.fillStyle = "#fff";
+          gctx.fillRect(index * BAR_SIZE, 0, 1, gCanvas.height);
+          gctx.fillText(`${time} sec`, index * BAR_SIZE + 16, textSize);
 
-					gctx.fillStyle = (COLORS.sus);
-					gctx.fillText(sus, index * BAR_SIZE + 16, textSize * 2)
-					gctx.fillStyle = (COLORS.inf);
-					gctx.fillText(inf, index * BAR_SIZE + 16, textSize * 3)
-					gctx.fillStyle = (COLORS.rem);
-					gctx.fillText(rem, index * BAR_SIZE + 16, textSize * 4)
-				}
-			});
+          gctx.fillStyle = COLORS.sus;
+          gctx.fillText(sus, index * BAR_SIZE + 16, textSize * 2);
+          gctx.fillStyle = COLORS.inf;
+          gctx.fillText(inf, index * BAR_SIZE + 16, textSize * 3);
+          gctx.fillStyle = COLORS.rem;
+          gctx.fillText(rem, index * BAR_SIZE + 16, textSize * 4);
+        }
+      });
 
       lastDrawnGraphLength = graphLength;
     }
